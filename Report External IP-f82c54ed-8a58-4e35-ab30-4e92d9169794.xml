@@ -1,0 +1,19 @@
+<joblist>
+  <job>
+    <defaultTab>nodes</defaultTab>
+    <description>uses ifconfig.co web service to report external IP address</description>
+    <executionEnabled>true</executionEnabled>
+    <id>f82c54ed-8a58-4e35-ab30-4e92d9169794</id>
+    <loglevel>INFO</loglevel>
+    <name>Report External IP</name>
+    <nodeFilterEditable>false</nodeFilterEditable>
+    <plugins />
+    <scheduleEnabled>true</scheduleEnabled>
+    <sequence keepgoing='false' strategy='node-first'>
+      <command>
+        <exec>ls -la</exec>
+      </command>
+    </sequence>
+    <uuid>f82c54ed-8a58-4e35-ab30-4e92d9169794</uuid>
+  </job>
+</joblist>
