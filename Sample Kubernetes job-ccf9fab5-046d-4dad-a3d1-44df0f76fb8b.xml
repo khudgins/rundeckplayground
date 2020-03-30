@@ -1,0 +1,55 @@
+<joblist>
+  <job>
+    <defaultTab>nodes</defaultTab>
+    <description>Runs a job to completion</description>
+    <executionEnabled>true</executionEnabled>
+    <id>ccf9fab5-046d-4dad-a3d1-44df0f76fb8b</id>
+    <loglevel>INFO</loglevel>
+    <name>Sample Kubernetes job</name>
+    <nodeFilterEditable>false</nodeFilterEditable>
+    <plugins />
+    <scheduleEnabled>true</scheduleEnabled>
+    <sequence keepgoing='false' strategy='node-first'>
+      <command>
+        <node-step-plugin type='Kubernetes-Create-Job'>
+          <configuration>
+            <entry key='api_version' value='batch/v1' />
+            <entry key='container_command' value='perl -Mbignum=bpi -wle print(bpi(2000))' />
+            <entry key='container_image' value='perl' />
+            <entry key='container_name' value='pi' />
+            <entry key='debug' value='false' />
+            <entry key='image_pull_policy' value='IfNotPresent' />
+            <entry key='job_restart_policy' value='Never' />
+            <entry key='name' value='pi' />
+            <entry key='namespace' value='rundeck' />
+            <entry key='verify_ssl' value='false' />
+          </configuration>
+        </node-step-plugin>
+      </command>
+      <command>
+        <node-step-plugin type='Kubernetes-Wait-Job'>
+          <configuration>
+            <entry key='debug' value='false' />
+            <entry key='name' value='pi' />
+            <entry key='namespace' value='rundeck' />
+            <entry key='retries' value='100' />
+            <entry key='show_log' value='true' />
+            <entry key='sleep' value='10' />
+            <entry key='verify_ssl' value='false' />
+          </configuration>
+        </node-step-plugin>
+      </command>
+      <command>
+        <node-step-plugin type='Kubernetes-Delete-Job'>
+          <configuration>
+            <entry key='debug' value='false' />
+            <entry key='name' value='pi' />
+            <entry key='namespace' value='rundeck' />
+            <entry key='verify_ssl' value='false' />
+          </configuration>
+        </node-step-plugin>
+      </command>
+    </sequence>
+    <uuid>ccf9fab5-046d-4dad-a3d1-44df0f76fb8b</uuid>
+  </job>
+</joblist>
