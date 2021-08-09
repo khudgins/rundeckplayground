@@ -1,0 +1,20 @@
+<joblist>
+  <job>
+    <defaultTab>nodes</defaultTab>
+    <description>This is an export example</description>
+    <executionEnabled>true</executionEnabled>
+    <id>486d0dd3-a8ba-4278-8062-34c818b0c301</id>
+    <loglevel>INFO</loglevel>
+    <name>Export example</name>
+    <nodeFilterEditable>false</nodeFilterEditable>
+    <plugins />
+    <scheduleEnabled>true</scheduleEnabled>
+    <schedules />
+    <sequence keepgoing='false' strategy='node-first'>
+      <command>
+        <exec>echo "This is an example"</exec>
+      </command>
+    </sequence>
+    <uuid>486d0dd3-a8ba-4278-8062-34c818b0c301</uuid>
+  </job>
+</joblist>

@@ -1,0 +1,43 @@
+<joblist>
+  <job>
+    <defaultTab>nodes</defaultTab>
+    <description>curl and get results</description>
+    <executionEnabled>true</executionEnabled>
+    <id>22da04a9-3825-4160-aa0b-966fd6430478</id>
+    <loglevel>INFO</loglevel>
+    <name>Test job</name>
+    <nodeFilterEditable>false</nodeFilterEditable>
+    <plugins />
+    <scheduleEnabled>true</scheduleEnabled>
+    <schedules />
+    <sequence keepgoing='false' strategy='node-first'>
+      <command>
+        <exec>curl -4 -s "ifconfig.co"</exec>
+        <plugins>
+          <LogFilter type='key-value-data'>
+            <config>
+              <logData>true</logData>
+              <name>MYIPV4</name>
+              <regex>^(\d+\.\d+\.\d+\.\d+)$</regex>
+            </config>
+          </LogFilter>
+        </plugins>
+      </command>
+      <command>
+        <plugins>
+          <LogFilter type='progress-badges'>
+            <config>
+              <doNothing>false</doNothing>
+              <mute>true</mute>
+              <regex>^(\d+\.\d+\.\d+\.\d+)$</regex>
+              <text>foo ${node.name}</text>
+            </config>
+          </LogFilter>
+        </plugins>
+        <script><![CDATA[echo @data.MYIPV4@]]></script>
+        <scriptargs />
+      </command>
+    </sequence>
+    <uuid>22da04a9-3825-4160-aa0b-966fd6430478</uuid>
+  </job>
+</joblist>
