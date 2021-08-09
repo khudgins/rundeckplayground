@@ -1,0 +1,32 @@
+<joblist>
+  <job>
+    <defaultTab>nodes</defaultTab>
+    <description></description>
+    <dispatch>
+      <excludePrecedence>true</excludePrecedence>
+      <keepgoing>false</keepgoing>
+      <rankOrder>ascending</rankOrder>
+      <successOnEmptyNodeFilter>false</successOnEmptyNodeFilter>
+      <threadcount>1</threadcount>
+    </dispatch>
+    <executionEnabled>true</executionEnabled>
+    <group>nodeactions</group>
+    <id>e6278d69-c9d5-4cb1-9d0d-04bb6deb82c1</id>
+    <loglevel>INFO</loglevel>
+    <name>GetHostname</name>
+    <nodeFilterEditable>false</nodeFilterEditable>
+    <nodefilters>
+      <filter>name: dbhost</filter>
+    </nodefilters>
+    <nodesSelectedByDefault>true</nodesSelectedByDefault>
+    <plugins />
+    <scheduleEnabled>true</scheduleEnabled>
+    <schedules />
+    <sequence keepgoing='false' strategy='node-first'>
+      <command>
+        <exec>hostname -a</exec>
+      </command>
+    </sequence>
+    <uuid>e6278d69-c9d5-4cb1-9d0d-04bb6deb82c1</uuid>
+  </job>
+</joblist>

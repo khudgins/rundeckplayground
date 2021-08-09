@@ -1,0 +1,142 @@
+<joblist>
+  <job>
+    <context>
+      <options preserveOrder='true'>
+        <option name='pd_incident_id' />
+      </options>
+    </context>
+    <defaultTab>nodes</defaultTab>
+    <description></description>
+    <dispatch>
+      <excludePrecedence>true</excludePrecedence>
+      <keepgoing>false</keepgoing>
+      <rankOrder>ascending</rankOrder>
+      <successOnEmptyNodeFilter>false</successOnEmptyNodeFilter>
+      <threadcount>1</threadcount>
+    </dispatch>
+    <executionEnabled>true</executionEnabled>
+    <id>38407629-4034-414e-b3af-8bfe8937c40f</id>
+    <loglevel>DEBUG</loglevel>
+    <name>safeDatabaseRestart</name>
+    <nodeFilterEditable>false</nodeFilterEditable>
+    <nodefilters>
+      <filter>name: dbhost</filter>
+    </nodefilters>
+    <nodesSelectedByDefault>true</nodesSelectedByDefault>
+    <plugins />
+    <scheduleEnabled>true</scheduleEnabled>
+    <schedules />
+    <sequence keepgoing='false' strategy='ruleset'>
+      <command>
+        <exec>sudo service mariadb status; echo "RUNDECK:DATA:status=$?"</exec>
+        <plugins>
+          <LogFilter type='key-value-data-multilines'>
+            <config>
+              <hideOutput>false</hideOutput>
+              <logData>true</logData>
+              <name>status</name>
+              <regex>.*Active: (.*active).*</regex>
+            </config>
+          </LogFilter>
+        </plugins>
+      </command>
+      <command>
+        <step-plugin type='export-var'>
+          <configuration>
+            <entry key='export' value='status' />
+            <entry key='group' value='export' />
+            <entry key='value' value='${data.status*}' />
+          </configuration>
+        </step-plugin>
+      </command>
+      <command>
+        <exec>echo "${export.status} - PD ID: ${option.pd_incident_id}</exec>
+      </command>
+      <command>
+        <step-plugin type='pagerduty-get-incident'>
+          <configuration>
+            <entry key='apiKey' value='keys/pdapikey' />
+            <entry key='pd-id' value='${option.pd_incident_id}' />
+          </configuration>
+        </step-plugin>
+      </command>
+      <command>
+        <step-plugin type='pd-note-step'>
+          <configuration>
+            <entry key='api_token' value='keys/pdapikey' />
+            <entry key='email' value='keith@pagerduty.com' />
+            <entry key='incident_id' value='${option.pd_incident_id}' />
+            <entry key='note' value='Rundeck beginning remediation. MariaDB status is ${export.status}' />
+          </configuration>
+        </step-plugin>
+      </command>
+      <command>
+        <exec>sudo service mariadb restart</exec>
+      </command>
+      <command>
+        <step-plugin type='pd-note-step'>
+          <configuration>
+            <entry key='api_token' value='keys/pdapikey' />
+            <entry key='email' value='keith@pagerduty.com' />
+            <entry key='incident_id' value='${option.pd_incident_id}' />
+            <entry key='note' value='Service successfully restarted, beginning function checks' />
+          </configuration>
+        </step-plugin>
+      </command>
+      <command>
+        <node-step-plugin type='nixy-waitfor-port-open'>
+          <configuration>
+            <entry key='host' value='localhost' />
+            <entry key='interval' value='5' />
+            <entry key='maxtry' value='10' />
+            <entry key='port' value='3306' />
+          </configuration>
+        </node-step-plugin>
+      </command>
+      <command>
+        <node-step-plugin type='org.rundeck.sqlrunner.SQLRunnerNodeStepPlugin'>
+          <configuration>
+            <entry key='commit' value='false' />
+            <entry key='jdbcDriver' value='org.mariadb.jdbc.Driver' />
+            <entry key='jdbcUrl' value='jdbc:mysql://172.31.29.53/testing?useSSL=false' />
+            <entry key='passwordStoragePath' value='keys/dbpass' />
+            <entry key='scriptBody' value='select 1 from jimmy;' />
+            <entry key='user' value='testuser' />
+          </configuration>
+        </node-step-plugin>
+      </command>
+      <command>
+        <step-plugin type='pd-note-step'>
+          <configuration>
+            <entry key='api_token' value='keys/pdapikey' />
+            <entry key='email' value='keith@pagerduty.com' />
+            <entry key='incident_id' value='${option.pd_incident_id}' />
+            <entry key='note' value='Sanity checks passed. MariaDB running safely. Resolving Incident.' />
+          </configuration>
+        </step-plugin>
+      </command>
+      <command>
+        <step-plugin type='pd-update-incident-step'>
+          <configuration>
+            <entry key='api_token' value='keys/pdapikey' />
+            <entry key='email' value='keith@pagerduty.com' />
+            <entry key='incident_id' value='${option.pd_incident_id}' />
+            <entry key='resolution' value='MariaDB successfully restarted.' />
+            <entry key='status' value='resolved' />
+          </configuration>
+        </step-plugin>
+      </command>
+      <pluginConfig>
+        <WorkflowStrategy>
+          <ruleset>
+            <rules><![CDATA[[*] run-in-sequence
+[6,7] unless:export.status==active
+[5,7,10,11] unless:!option.pd_incident_id
+]]></rules>
+          </ruleset>
+        </WorkflowStrategy>
+      </pluginConfig>
+    </sequence>
+    <uuid>38407629-4034-414e-b3af-8bfe8937c40f</uuid>
+  </job>
+</joblist>

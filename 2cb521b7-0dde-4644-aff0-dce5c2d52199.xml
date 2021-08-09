@@ -1,0 +1,44 @@
+<joblist>
+  <job>
+    <defaultTab>nodes</defaultTab>
+    <description></description>
+    <executionEnabled>true</executionEnabled>
+    <id>2cb521b7-0dde-4644-aff0-dce5c2d52199</id>
+    <loglevel>DEBUG</loglevel>
+    <name>VariableDemoChild</name>
+    <nodeFilterEditable>false</nodeFilterEditable>
+    <plugins />
+    <scheduleEnabled>true</scheduleEnabled>
+    <schedules />
+    <sequence keepgoing='false' strategy='sequential'>
+      <command>
+        <exec>echo "Recieved from options: ${option.hostname}"</exec>
+      </command>
+      <command>
+        <exec>echo "Generate a new variable";echo "RUNDECK:DATA:newvar = foo"</exec>
+        <plugins>
+          <LogFilter type='key-value-data'>
+            <config>
+              <invalidKeyPattern>\s|\$|\{|\}|\\</invalidKeyPattern>
+              <logData>true</logData>
+              <regex>^RUNDECK:DATA:\s*([^\s]+?)\s*=\s*(.+)$</regex>
+            </config>
+          </LogFilter>
+        </plugins>
+      </command>
+      <command>
+        <exec>echo "Generated variable for export - data.newvar = ${data.newvar}"</exec>
+      </command>
+      <command>
+        <step-plugin type='export-var'>
+          <configuration>
+            <entry key='export' value='newvar' />
+            <entry key='group' value='export' />
+            <entry key='value' value='${data.newvar*}' />
+          </configuration>
+        </step-plugin>
+      </command>
+    </sequence>
+    <uuid>2cb521b7-0dde-4644-aff0-dce5c2d52199</uuid>
+  </job>
+</joblist>

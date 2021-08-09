@@ -1,0 +1,65 @@
+<joblist>
+  <job>
+    <defaultTab>nodes</defaultTab>
+    <description></description>
+    <dispatch>
+      <excludePrecedence>true</excludePrecedence>
+      <keepgoing>false</keepgoing>
+      <rankOrder>ascending</rankOrder>
+      <successOnEmptyNodeFilter>false</successOnEmptyNodeFilter>
+      <threadcount>1</threadcount>
+    </dispatch>
+    <executionEnabled>true</executionEnabled>
+    <id>c0fe2e0d-2ad9-4ce5-8ea7-348991d66b1b</id>
+    <loglevel>INFO</loglevel>
+    <name>VariableDemo</name>
+    <nodeFilterEditable>false</nodeFilterEditable>
+    <nodefilters>
+      <filter>.*</filter>
+    </nodefilters>
+    <nodesSelectedByDefault>true</nodesSelectedByDefault>
+    <plugins />
+    <scheduleEnabled>true</scheduleEnabled>
+    <schedules />
+    <sequence keepgoing='false' strategy='sequential'>
+      <command>
+        <exec>echo "Target hostname: `hostname`"</exec>
+        <plugins>
+          <LogFilter type='key-value-data'>
+            <config>
+              <invalidKeyPattern>\s|\$|\{|\}|\\</invalidKeyPattern>
+              <logData>true</logData>
+              <name>hostname</name>
+              <regex>^.+:\s+(.+)$</regex>
+            </config>
+          </LogFilter>
+        </plugins>
+      </command>
+      <command>
+        <script><![CDATA[echo "Inside a script"
+echo "@data.hostname@"]]></script>
+        <scriptargs />
+        <scriptinterpreter>/bin/bash</scriptinterpreter>
+      </command>
+      <command>
+        <step-plugin type='export-var'>
+          <configuration>
+            <entry key='export' value='hostname' />
+            <entry key='group' value='export' />
+            <entry key='value' value='${data.hostname*}' />
+          </configuration>
+        </step-plugin>
+      </command>
+      <command>
+        <jobref name='VariableDemoChild'>
+          <arg line='-hostname ${export.hostname}' />
+          <uuid>2cb521b7-0dde-4644-aff0-dce5c2d52199</uuid>
+        </jobref>
+      </command>
+      <command>
+        <exec>echo "Got from child job: ${export.newvar}"</exec>
+      </command>
+    </sequence>
+    <uuid>c0fe2e0d-2ad9-4ce5-8ea7-348991d66b1b</uuid>
+  </job>
+</joblist>

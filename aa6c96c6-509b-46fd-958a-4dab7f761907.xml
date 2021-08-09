@@ -1,0 +1,29 @@
+<joblist>
+  <job>
+    <defaultTab>nodes</defaultTab>
+    <description></description>
+    <executionEnabled>true</executionEnabled>
+    <id>aa6c96c6-509b-46fd-958a-4dab7f761907</id>
+    <loglevel>INFO</loglevel>
+    <name>dbselect</name>
+    <nodeFilterEditable>false</nodeFilterEditable>
+    <plugins />
+    <scheduleEnabled>true</scheduleEnabled>
+    <schedules />
+    <sequence keepgoing='false' strategy='node-first'>
+      <command>
+        <node-step-plugin type='org.rundeck.sqlrunner.SQLRunnerNodeStepPlugin'>
+          <configuration>
+            <entry key='commit' value='false' />
+            <entry key='jdbcDriver' value='org.mariadb.jdbc.Driver' />
+            <entry key='jdbcUrl' value='jdbc:mysql://172.31.29.53/testing?useSSL=false' />
+            <entry key='passwordStoragePath' value='keys/dbpass' />
+            <entry key='scriptBody' value='select * from jimmy;' />
+            <entry key='user' value='testuser' />
+          </configuration>
+        </node-step-plugin>
+      </command>
+    </sequence>
+    <uuid>aa6c96c6-509b-46fd-958a-4dab7f761907</uuid>
+  </job>
+</joblist>
