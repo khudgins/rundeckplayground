@@ -37,6 +37,9 @@
         <script><![CDATA[echo @data.MYIPV4@]]></script>
         <scriptargs />
       </command>
+      <command>
+        <exec>echo "foo"</exec>
+      </command>
     </sequence>
     <uuid>22da04a9-3825-4160-aa0b-966fd6430478</uuid>
   </job>
