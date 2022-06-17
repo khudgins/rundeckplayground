@@ -1,0 +1,29 @@
+<joblist>
+  <job>
+    <defaultTab>nodes</defaultTab>
+    <description></description>
+    <executionEnabled>true</executionEnabled>
+    <id>3561f1f2-d267-4015-b89b-dcb0a3196478</id>
+    <loglevel>INFO</loglevel>
+    <name>Ansible Sample</name>
+    <nodeFilterEditable>false</nodeFilterEditable>
+    <plugins />
+    <scheduleEnabled>true</scheduleEnabled>
+    <schedules />
+    <sequence keepgoing='false' strategy='node-first'>
+      <command>
+        <step-plugin type='com.batix.rundeck.plugins.AnsiblePlaybookWorkflowStep'>
+          <configuration>
+            <entry key='ansible-base-dir-path' value='/var/lib/rundeck/ansible' />
+            <entry key='ansible-become' value='false' />
+            <entry key='ansible-disable-limit' value='true' />
+            <entry key='ansible-playbook' value='sample.yaml' />
+            <entry key='ansible-ssh-passphrase-option' value='option.password' />
+            <entry key='ansible-ssh-use-agent' value='false' />
+          </configuration>
+        </step-plugin>
+      </command>
+    </sequence>
+    <uuid>3561f1f2-d267-4015-b89b-dcb0a3196478</uuid>
+  </job>
+</joblist>
